@@ -1,0 +1,23 @@
+name:       RSpeak
+uuid:       6e201089-c5b9-4ccd-9105-493e660ead50
+scopeName:  source.rspeak
+fileTypes:
+    - requirements
+patterns:
+    - comment:  Group name delimiter
+      name:     keyword.rspeak
+      match:    ===+
+
+    - comment:  Requirement declaration
+      name:     keyword.rspeak
+      begin:    \*
+      end:      \A\n\Z
+      patterns:
+          - include:    $self
+          
+          - name:       string.rspeak
+            match:      .
+
+    - comment:  Example row
+      name:     string.rspeak
+      match:    \|.+\|(.+\|)*

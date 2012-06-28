@@ -1,0 +1,3 @@
+{
+    "cmd": ["$packages/Relaxdiego/lib/translate_yaml_to_tmlanguage.rb", "$file"]
+}
