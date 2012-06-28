@@ -11,7 +11,7 @@ class YamlToTmLanguageTranslator
               </plist>
           EOF
     output = ''
-    REXML::Document.new(xml).write output, 2
+    REXML::Document.new(xml).write output
     output
   end
 
