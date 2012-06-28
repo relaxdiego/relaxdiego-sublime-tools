@@ -2,7 +2,7 @@ require 'rexml/document'
 require 'yaml'
 
 class YamlToTmLanguageTranslator
-  def translate(yml)
+  def translate(yml, indent = -1)
     xml = <<-EOF
           <?xml version="1.0" encoding="UTF-8"?>
               <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -11,7 +11,7 @@ class YamlToTmLanguageTranslator
               </plist>
           EOF
     output = ''
-    REXML::Document.new(xml).write output
+    REXML::Document.new(xml).write output, indent
     output
   end
 

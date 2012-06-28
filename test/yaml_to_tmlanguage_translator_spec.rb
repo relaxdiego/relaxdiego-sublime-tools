@@ -108,7 +108,7 @@ describe YamlToTmLanguageTranslator do
   private
 
   def translate(text)
-    YamlToTmLanguageTranslator.new.translate(text)
+    YamlToTmLanguageTranslator.new.translate(text, 2)
   end
 
   def prepare(xml)
