@@ -3,15 +3,17 @@ require 'yaml'
 
 class YamlToTmLanguageTranslator
   def translate(yml, indent = -1)
-    xml = <<-EOF
-          <?xml version="1.0" encoding="UTF-8"?>
-              <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-              <plist version="1.0">
-                #{ load_and_dump(yml) }
-              </plist>
-          EOF
+    xml = REXML::Document.new(
+        <<~EOF
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+        <plist version="1.0">
+        </plist>
+        EOF
+    )
+    xml.root << load_and_dump(yml)
     output = ''
-    REXML::Document.new(xml).write output, indent
+    xml.write output, indent
     output
   end
 
@@ -25,25 +27,25 @@ class YamlToTmLanguageTranslator
 
   def dump(obj)
     if obj.class == Hash
-      output = "<dict>"
+      output = REXML::Element.new "dict"
       obj.each do |key, value|
-        output << "<key>#{ key }</key>"
+        key_el = REXML::Element.new "key"
+        key_el.text = key
+        output << key_el
         output << dump(value)
       end
-      output << "</dict>"
     elsif obj.class == String
-      output = "<string>#{ obj }</string>"
+      output = REXML::Element.new "string"
+      output.add_text obj
     elsif obj.class == Array
-      output = "<array>"
+      output = REXML::Element.new "array"
 
       obj.each do |value|
         output << dump(value)
       end
-
-      output << "</array>"
     end
 
-    output || ''
+    output || REXML::Text.new("")
   end
 
 end
